@@ -1,0 +1,5 @@
+The current month is January.
+The current year is 2022.
+I am a student at the University of Central Florida.
+This Spring 2022, I am taking COP3502C Computer Science 1 with Dr. Steinberg.
+I am super excited to learn foundational CS topics this semester!
