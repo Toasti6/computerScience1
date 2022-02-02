@@ -12,7 +12,7 @@
 char ** populate(char ** words, FILE *fptr, int *currentsize, int *maxsize);
 char* generateSentence(char ** noun, char ** verb, char ** adjective, char ** preposition, char ** article, int nounsize, int verbsize, int adjsize, int prepositionsize, int articlesize); //write sentence to console window
 //void generateStory(char ** noun, char ** verb, char ** adjective, char ** preposition, char ** article, int nounsize, int verbsize, int adjsize, int prepositionsize, int articlesize, FILE *fptr); //write story to txt file
-//void displaySentence(char * sentence);
+void displaySentence(char * sentence);
 //void cleanUp(char ** nouns, char ** verbs, char ** adjectives, char ** prepositions, char ** articles, int nounsize, int verbsize, int adjsize, int prepositionsize, int articlesize);
 
 int main()
@@ -99,7 +99,7 @@ int main()
 	for(int x = 0; x < 5; ++x)
 	{
 		char * sentence = generateSentence(nouns, verbs, adjectives, preposition, articles, nounsize, verbsize, adjsize, prepositionsize, articlemaxsize);
-		//displaySentence(sentence);
+		displaySentence(sentence);
 		free(sentence);
 	}
 	
@@ -150,8 +150,7 @@ char ** populate(char ** words, FILE *fptr, int *currentsize, int *maxsize)
 
 char* generateSentence(char ** noun, char ** verb, char ** adjective, char ** preposition, char ** article, int nounsize, int verbsize, int adjsize, int prepositionsize, int articlesize)
 {
-
-	char ** wordsGen = (char **) malloc(sizeof(char *) * 10); 
+	char ** wordsGen = (char **) malloc(sizeof(char *) * 9); 
 	char * sentenceGen = (char*)malloc(sizeof(char)*100);
 
 	if(sentenceGen == NULL)
@@ -173,43 +172,37 @@ char* generateSentence(char ** noun, char ** verb, char ** adjective, char ** pr
 		}	
 	}
 
-	char randNoun0[LIMIT];
-	char randNoun1[LIMIT];
+
 	strcpy(wordsGen[2], noun[rand() % nounsize]);
-	strcpy(randNoun1, noun[rand() % nounsize]);
+	strcpy(wordsGen[7], noun[rand() % nounsize]);
 
-	char randAdjective0[LIMIT];
-	char randAdjective1[LIMIT];
-	strcpy(randAdjective0, adjective[rand() % adjsize]);
-	strcpy(randAdjective1, adjective[rand() % adjsize]);
+	strcpy(wordsGen[1], adjective[rand() % adjsize]);
+	strcpy(wordsGen[6], adjective[rand() % adjsize]);
 
-	char randArticle0[LIMIT];
-	char randArticle1[LIMIT];
-	strcpy(randArticle0, article[rand() % articlesize]);
-	strcpy(randArticle1, article[rand() % articlesize]);
+	strcpy(wordsGen[0], article[rand() % articlesize]);
+	strcpy(wordsGen[5], article[rand() % articlesize]);
 
-	char randVerb[LIMIT];
-	strcpy(randVerb, verb[rand() % verbsize]);
+	strcpy(wordsGen[3], verb[rand() % verbsize]);
 
-	char randPreposition[LIMIT];
-	strcpy(randPreposition, preposition[rand() % prepositionsize]);
+	strcpy(wordsGen[4], preposition[rand() % prepositionsize]);
 
-	strcpy(sentenceGen, randArticle0);
-	strcat(sentenceGen, " ");
-	strcat(sentenceGen, randAdjective0);
-	strcat(sentenceGen, " ");
-	strcat(sentenceGen, randNoun0);
-	strcat(sentenceGen, " ");
-	strcat(sentenceGen, randVerb);
-	strcat(sentenceGen, " ");
-	strcat(sentenceGen, randPreposition);
-	strcat(sentenceGen, " ");
-	strcat(sentenceGen, randArticle1);
-	strcat(sentenceGen, " ");
-	strcat(sentenceGen, randAdjective1);
-	strcat(sentenceGen, " ");
-	strcat(sentenceGen, randNoun1);
+	wordsGen[8] = '\0';
+
+	strcpy(sentenceGen, wordsGen[0]);
+
+	for(int i = 1; i < 8; ++i)
+	{
+		strcat(sentenceGen, " ");
+		strcat(sentenceGen, wordsGen[i]);
+	}
+
 	strcat(sentenceGen, ".");
-	printf("%s", sentenceGen);
-
+	return sentenceGen;
 } 
+
+void displaySentence(char * sentence)
+{
+	printf("%s", sentence);
+
+
+}
