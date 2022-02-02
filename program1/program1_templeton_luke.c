@@ -100,7 +100,9 @@ int main()
 	{
 		char * sentence = generateSentence(nouns, verbs, adjectives, preposition, articles, nounsize, verbsize, adjsize, prepositionsize, articlemaxsize);
 		displaySentence(sentence);
+		printf("TEST %d\n", x);
 		free(sentence);
+		printf("TEST %d\n", x);
 	}
 	
 	printf("Now let's create three stories that just don't make sense.\n");
@@ -197,12 +199,18 @@ char* generateSentence(char ** noun, char ** verb, char ** adjective, char ** pr
 	}
 
 	strcat(sentenceGen, ".");
+
+for(int i = 0; i < 10; ++i)
+	{
+		free(wordsGen[i]);
+		wordsGen[i] = NULL;
+	}
+
 	return sentenceGen;
 } 
+
 
 void displaySentence(char * sentence)
 {
 	printf("%s", sentence);
-
-
 }
