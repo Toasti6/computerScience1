@@ -140,21 +140,26 @@ char ** populate(char ** words, FILE *fptr, int *currentsize, int *maxsize)
 		}	
 	}
 
-	int j = 0;
+	int j = -1;
 
-	while(fscanf(fptr, " %s\n", words[j]) != EOF)
+	do
 	{
-		fscanf(fptr, " %s\n", words[j]);
-
-		*currentsize +=1;
 		j++;
 
-		if(*currentsize >= *maxsize)
+		*currentsize +=1;
+
+		fscanf(fptr, "%s", words[j]);
+		printf("%s\n", words[j]);
+		printf("%d %d %d\n",*currentsize, *maxsize, j);
+
+		if(*currentsize == *maxsize)
 		{
-			printf("HELLO\n");
+			printf("running doubleIt...\n");
 			words = doubleIt(words, maxsize);
 		}
-	}
+
+	}while(*words[j] != EOF);
+
 	return words;
 }
 
@@ -235,7 +240,8 @@ char ** doubleIt(char **arr, int *maxsize)
 {
 	*maxsize = *maxsize * 2;
 
-	char **doubleWords = (char **) malloc(sizeof(char*) * *maxsize);
+	char **doubleWords = NULL;
+	doubleWords = (char **) malloc(sizeof(char*) * *maxsize);
 
 	printf("%d\n",*maxsize);
 
@@ -243,10 +249,9 @@ char ** doubleIt(char **arr, int *maxsize)
 		{
 			doubleWords[i] = (char*) malloc(sizeof(char) * LIMIT);
 			printf("HELLO %d\n", i);
-			strcpy(doubleWords[i],arr[i]);
+			arr[i] = doubleWords[i];
 			free(arr[i]);
 		}
-
 
 	return doubleWords;
 }
