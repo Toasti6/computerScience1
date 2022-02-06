@@ -1,0 +1,10 @@
+Enter seed: Welcome to the random sentence generator.
+Let's generate some random sentences that don't make sense.
+An big year use against An big case.
+A public eye do over An different person.
+A new group think into The early day.
+The great eye leave out An long year.
+A other government tell against An big case.
+Now let's create three stories that just don't make sense.
+The stories were generated successfully and stored in their respective text files.
+Check them out!
