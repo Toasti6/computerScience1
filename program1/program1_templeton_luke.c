@@ -124,26 +124,15 @@ int main()
 	return 0;
 }
 
-/*****************************************************************************
- * Function Name
- * Purpose
- * 
- * Variables:
- * 	words = words is used for xyz
- *  fptr = what fptr is
- * 
- * Return Value:
- * 	Returns a pointer to blah blah blah
- *****************************************************************************/
 char ** populate(char ** words, FILE *fptr, int *currentsize, int *maxsize)
 {
-	int status = 0;
+	int status = 0; //status of eof
 
-	for(int i = 0; i < *maxsize; i++)
+	for(int i = 0; i < *maxsize; i++) //allocates memory for words maxsize times
 	{
 		words[i] = (char*) malloc(sizeof(char) * LIMIT);	
 
-		if(words[i] == NULL) 
+		if(words[i] == NULL) //checks for allocation
 		{
 			printf("malloc was not successful\n");
 			printf("Program will now terminate.\n");
@@ -151,23 +140,23 @@ char ** populate(char ** words, FILE *fptr, int *currentsize, int *maxsize)
 		}	
 	}
 
-	int j = 0;
+	int j = 0; //counter
 
 	do
 	{
-		status = fscanf(fptr, "%s", words[j]);
+		status = fscanf(fptr, "%s", words[j]); //scans words into array
 
 		if(status != EOF)
 		{
-			if((*currentsize)+1 == *maxsize)
+			if((*currentsize)+1 == *maxsize) //executes if array limit is reached
 			{
-				words = doubleIt(words, maxsize);
+				words = doubleIt(words, maxsize); //doubles array length
 			}
 			j++;
 			(*currentsize)++;
 		}
 
-	} while(status != EOF);
+	} while(status != EOF); //scans words if not reached eof
 
 	return words;
 }
@@ -175,22 +164,23 @@ char ** populate(char ** words, FILE *fptr, int *currentsize, int *maxsize)
 char* generateSentence(char ** noun, char ** verb, char ** adjective, char ** preposition, char ** article, int nounsize, int verbsize, int adjsize, int prepositionsize, int articlesize)
 {
 	char ** wordsGen = NULL;
-	wordsGen = (char **) malloc(sizeof(char *) * 10); 
+	wordsGen = (char **) malloc(sizeof(char *) * 10); //words randomly generated and combined in one array
 	char * sentenceBuffer = NULL;
-	sentenceBuffer = (char*)malloc(sizeof(char) * 100);
+	sentenceBuffer = (char*)malloc(sizeof(char) * 100); //sentence returned
 
-	if(sentenceBuffer == NULL)
+	if(sentenceBuffer == NULL) //malloc check
 	{
 		printf("malloc was not successful\n");
 		printf("Program will now terminate.\n");
 		exit(1);
 	}
+
 	sentenceBuffer[0] = '\0';
 
-	// Looping 1 time for each word in the sentence (max sentence size is 8)
+	// looping 1 time for each word in the sentence (max sentence size is 8)
 	for(int i = 0; i < 8; ++i)
 	{
-		wordsGen[i] = (char*) malloc(sizeof(char) * LIMIT);	
+		wordsGen[i] = (char*) malloc(sizeof(char) * LIMIT);	//allocates memory for each word
 
 		if(wordsGen[i] == NULL) 
 		{
@@ -200,6 +190,7 @@ char* generateSentence(char ** noun, char ** verb, char ** adjective, char ** pr
 		}
 	}
 
+	//randomly generated words are sotred in wordsGen[i]
 	strcpy(wordsGen[0], article[rand() % articlesize]);
 	strcpy(wordsGen[1], adjective[rand() % adjsize]);
 	strcpy(wordsGen[2], noun[rand() % nounsize]);
@@ -209,7 +200,7 @@ char* generateSentence(char ** noun, char ** verb, char ** adjective, char ** pr
 	strcpy(wordsGen[6], adjective[rand() % adjsize]);
 	strcpy(wordsGen[7], noun[rand() % nounsize]);
 
-	//strcpy(sentenceBuffer, wordsGen[0]);
+	//arranges sentence in order with spaces and period
 	for(int i = 0; i < 8; i++)
 	{
 		strcat(sentenceBuffer, wordsGen[i]);
@@ -232,40 +223,39 @@ char* generateSentence(char ** noun, char ** verb, char ** adjective, char ** pr
 
 void displaySentence(char * sentence)
 {
-	printf("%s\n", sentence);
+	printf("%s\n", sentence); //displays sentence with new line
 }
 
 void generateStory(char ** noun, char ** verb, char ** adjective, char ** preposition, char ** article, int nounsize, int verbsize, int adjsize, int prepositionsize, int articlesize, FILE *fptr)
 {
-	int loopTimes = (rand() % 401) + 100;
+	int loopTimes = (rand() % 401) + 100; //random number between 100-500
 	for(int i = 0; i < loopTimes; i++)
 	{
 		char * storySentence = generateSentence(noun, verb, adjective, preposition, article, nounsize, verbsize, adjsize, prepositionsize, articlesize);
-		fprintf(fptr, "%s\n", storySentence);
+		fprintf(fptr, "%s\n", storySentence); //prints to story file
 		free(storySentence);
 	}
 }
 
 char ** doubleIt(char **arr, int *maxsize)
 {
-	int oldMaxSize = *maxsize;
+	int oldMaxSize = *maxsize; //keeps track of original max size
 
 	*maxsize = *maxsize * 2;
 
-	//doublewords is the REPLACEMENT for aar. This will be freed by a future iteration of THIS function again or finally in the function xyz
-	char **doubleWords = NULL;
+	char **doubleWords = NULL; //doublewords is the new arr
 	doubleWords = (char **) malloc(sizeof(char*) * *maxsize);
 
 	for(int i = 0; i < *maxsize; i++)
 	{
-		if (i < oldMaxSize)
+		if (i < oldMaxSize) //copies everything in from old array
 		{
 			doubleWords[i] = arr[i];
 		}
-		else
+		else //allocates memory for new words
 		{
 			doubleWords[i] = (char*) malloc(sizeof(char) * LIMIT);
-			*doubleWords[i] = '\0';
+			*doubleWords[i] = '\0'; //sets newly allocated memory for words
 		}
 	}
 
@@ -278,9 +268,9 @@ void cleanUp(char ** nouns, char ** verbs, char ** adjectives, char ** prepositi
 {
 	for(int i = 0; i < nounsize; i++)
 	{
-		free(nouns[i]);
+		free(nouns[i]); //frees the individual nouns
 	}
-	free(nouns);
+	free(nouns); //frees nouns arr
 
 	for(int i = 0; i < verbsize; i++)
 	{

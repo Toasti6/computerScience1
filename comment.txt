@@ -1,0 +1,11 @@
+/*****************************************************************************
+ * Function Name
+ * Purpose
+ * 
+ * Variables:
+ * 	words = words is used for xyz
+ *  fptr = what fptr is
+ * 
+ * Return Value:
+ * 	Returns a pointer to blah blah blah
+ *****************************************************************************/
