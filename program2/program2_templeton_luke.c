@@ -58,13 +58,28 @@ int main()
 
 int blobDetect(int ** picture, int x, int y, int limit)
 {
-	if(picture[x][y] == 1 && ((limit =! x) || (limit =! y)))
+	int blobSize = 0;
+
+/*	if(picture[x][y] == 1 && ((limit =! x) || (limit =! y)))
 	{
 		picture[x][y] = 0;
 		printf("x = %d y = %d\n",x, y );
+		blobSize = 1 + blobDetect(picture, x + 1, y, limit)
 
 	}
+*/
 
+	if(picture[x][y] = 0)
+	{
+		return 0;
+	}
+	else if(picture[x][y] == 1 && ((limit =! x) || (limit =! y)))
+	{
+		blobSize+=1;
+		picture[x][y] == 0;
+		blobSize = blobSize + blobDetect(picture, x + 1, y, limit);
+		blobSize = blobSize + blobDetect(picture, x, y + 1, limit);
+	}
 
-	return 0;
+	return blobSize;
 }
