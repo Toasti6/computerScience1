@@ -1,0 +1,10 @@
+Enter seed: Enter the size of the picture: Test 1
+There are 45 blob(s) in the picture.
+Test 2
+There are 30 blob(s) in the picture.
+Test 3
+There are 48 blob(s) in the picture.
+Test 4
+There are 35 blob(s) in the picture.
+Test 5
+There are 51 blob(s) in the picture.

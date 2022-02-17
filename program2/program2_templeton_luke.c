@@ -58,27 +58,16 @@ int main()
 
 int blobDetect(int ** picture, int x, int y, int limit)
 {
-	int blobSize = 0;
+	int blobSize = 0; //counter
 
-/*	if(picture[x][y] == 1 && ((limit =! x) || (limit =! y)))
+	if(limit <= x || limit <= y || y < 0 || x < 0 || picture[x][y] == 0)
 	{
-		picture[x][y] = 0;
-		printf("x = %d y = %d\n",x, y );
-		blobSize = 1 + blobDetect(picture, x + 1, y, limit)
-
+		return 0; //returns 0 if out of bounds or pixel = 0
 	}
-*/
-
-	if(picture[x][y] = 0)
+	else if(picture[x][y] == 1)
 	{
-		return 0;
-	}
-	else if(picture[x][y] == 1 && ((limit =! x) || (limit =! y)))
-	{
-		blobSize+=1;
-		picture[x][y] == 0;
-		blobSize = blobSize + blobDetect(picture, x + 1, y, limit);
-		blobSize = blobSize + blobDetect(picture, x, y + 1, limit);
+		picture[x][y] = 0; //sets pixel to 0 so its not recounted
+		blobSize = 1 + blobSize + blobDetect(picture, x + 1, y, limit) + blobDetect(picture, x, y + 1, limit) + blobDetect(picture, x, y - 1, limit) + blobDetect(picture, x - 1, y, limit) + blobDetect(picture, x + 1, y + 1, limit) + blobDetect(picture, x - 1, y + 1, limit)+ blobDetect(picture, x - 1, y - 1, limit) + blobDetect(picture, x + 1, y - 1, limit); //calls all 8 positions around pixel
 	}
 
 	return blobSize;
