@@ -21,8 +21,8 @@ int empty(card_t * node); //check to see if linked list is empty
 //void cleanUp(card_t * head); //free memory to prevent memory leaks
 int deckSize(card_t * head); //count number of nodes in the linked list
 card_t * search(card_t * node, int spot); //search list for a specific spot in the card deck indexing is similar to array setup
-//card_t * copyCard(card_t * node); //make a deep copy of card
-//card_t * removeCard(card_t * node, int spot); //remove card from linkedlist
+card_t * copyCard(card_t * node); //make a deep copy of card
+card_t * removeCard(card_t * node, int spot); //remove card from linkedlist
 card_t * insertBackDeck(card_t *head, card_t *node); //place card at end of pile
 int compareCard(card_t * cardp1, card_t * cardp2); //compare cards
 //card_t * moveCardBack(card_t *head); //place card at top of deck to the bottom of the deck
@@ -205,6 +205,9 @@ int deckSize(card_t * head)
 		count++;
 	}
 	printf("DECK SIZE = %d\n", count);
+
+	free(temp);
+
 	return count;
 }
 
@@ -212,12 +215,48 @@ card_t * search(card_t * node, int spot)
 {
 	card_t *card = node;
 
-	for(int i = 0; int < spot; i++)
+	for(int i = 0; i < spot; i++)
 	{
 		card = card->nextptr;
 	}
 
 	return card;
+}
+
+card_t * copyCard(card_t * node)
+{
+	int nodeLength = strlen(node->type);
+
+	card_t *copyCard = (card_t *) malloc(sizeof(card_t));
+	copyCard->type = (char *) malloc(sizeof(char) * nodeLength + 1);
+
+	strcpy(copyCard->type, node->type);
+	copyCard->rank = node->rank;
+
+	return copyCard;
+}
+
+card_t * removeCard(card_t * node, int spot)
+{
+	card_t *head = node;
+	card_t *temp = search(head, spot);
+	int counter = 0;
+
+	if(node == temp)
+	{
+		head = head->nextptr;
+		free(temp);
+		return head;
+	}
+	else
+	{
+		node = search(head, spot - 1);
+		node->nextptr = temp->nextptr;
+
+		free(temp);
+	}
+
+	return head;
 }
 
 card_t * insertBackDeck(card_t *head, card_t *node)
@@ -237,8 +276,8 @@ card_t * insertBackDeck(card_t *head, card_t *node)
 int compareCard(card_t * cardp1, card_t * cardp2)
 {
 	int result = 0;
-	rank1 = 0;
-	rank2 = 0;
+	int rank1 = 0;
+	int rank2 = 0;
 
 	if(cardp1->rank)
 
