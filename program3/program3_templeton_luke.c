@@ -14,7 +14,7 @@ typedef struct card_s{
 
 //function prototypes
 void rules(); //display rules
-//int playRound(); //simulate round
+int playRound(); //simulate round
 card_t * openCardDeck(); //open the card deck and place into a linkedlist setup
 card_t * insertBackSetup(card_t *node, char *name, int cardrank); //take card from orginial deck and place in back of linked list for setup of game
 int empty(card_t * node); //check to see if linked list is empty
@@ -25,7 +25,7 @@ card_t * copyCard(card_t * node); //make a deep copy of card
 card_t * removeCard(card_t * node, int spot); //remove card from linkedlist
 card_t * insertBackDeck(card_t *head, card_t *node); //place card at end of pile
 int compareCard(card_t * cardp1, card_t * cardp2); //compare cards
-//card_t * moveCardBack(card_t *head); //place card at top of deck to the bottom of the deck
+card_t * moveCardBack(card_t *head); //place card at top of deck to the bottom of the deck
 
 int main()
 {
@@ -48,7 +48,7 @@ int main()
 		printf("Alright lets play game %d.\n", game);
 		printf("Lets split the deck.\n");
 
-		//result = playRound(); //play game
+		result = playRound(); //play game
 		
 		if((result == 1 && player == 1) || (result == 2 && player == 2)) //determine who won
 			printf("You won game %d.\n", game);
@@ -69,6 +69,15 @@ void rules()
 	printf("However if there is a tie, then we have to we have to place one card faced down and the next one faced up and compare the results.\n");
 	printf("Winner of the tie, will grab all the cards out. However if it's a tie again, then we repeat the same action.\n");
 	printf("Ready? Here we go!\n");
+}
+
+int playRound()
+{
+	int result = 0;
+	card_t *deck = 
+
+
+	return result;
 }
 
 card_t * openCardDeck()
@@ -284,4 +293,19 @@ int compareCard(card_t * cardp1, card_t * cardp2)
 	if(cardp1->rank)
 
 	return result;
+}
+
+card_t * moveCardBack(card_t *head)
+{
+	card_t *temp = head;
+	card_t *newHead = head->nextptr;
+
+	while(temp->nextptr != NULL)
+	{
+		temp = temp->nextptr;
+	}	
+
+	head = temp->nextptr;
+
+	return newHead;
 }
