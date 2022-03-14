@@ -73,9 +73,142 @@ void rules()
 
 int playRound()
 {
-	int result = 0;
-	card_t *deck = 
+	int result;
 
+	card_t *fullDeck = openCardDeck();
+	int fullDeckSize = deckSize(fullDeck);
+
+	card_t *p1Deck = (card_t*) malloc(fullDeckSize);
+	card_t *p2Deck = (card_t*) malloc(fullDeckSize);
+
+	p1Deck = NULL;
+	p2Deck = NULL;
+
+	printf("There are %d cards in the deck.\n", fullDeckSize);
+
+	while(fullDeckSize > 0)
+	{
+		printf("%d\n", fullDeckSize);
+
+		int randCard = rand() % fullDeckSize;
+		card_t *insertCard = search(fullDeck, randCard);
+		p1Deck = insertBackDeck(p1Deck, copyCard(insertCard));
+		fullDeck = removeCard(fullDeck, randCard);
+		fullDeckSize = deckSize(fullDeck);
+
+		randCard = rand() % fullDeckSize;;
+		insertCard = search(fullDeck, randCard);
+		p2Deck = insertBackDeck(p2Deck, copyCard(insertCard));
+		fullDeck = removeCard(fullDeck, randCard);
+		fullDeckSize = deckSize(fullDeck);
+
+		printf("%d\n", fullDeckSize);
+	}
+
+	int p1DeckSize = deckSize(p1Deck);
+	int p2DeckSize = deckSize(p2Deck);
+	int roundResult = 0;
+
+	while(p1DeckSize > 0 || p2DeckSize > 0)
+	{
+		printf("Player 1 pulled out %s.\n", p1Deck->type);
+		printf("\tPlayer 2 pulled out %s.", p2Deck->type);
+
+		roundResult = compareCard(p1Deck, p2Deck);
+
+		if(roundResult == 1)
+		{
+			printf("Player 1 won that round.\n");
+
+			p1Deck = moveCardBack(p1Deck);
+			p1Deck = insertBackDeck(p1Deck, copyCard(p2Deck));
+			p2Deck = removeCard(p2Deck, 0);
+
+			p1DeckSize = deckSize(p1Deck);
+			p2DeckSize = deckSize(p2Deck);
+
+			printf("Player 1 has %d cards.\n", p1DeckSize);
+			printf("Player 2 has %d cards.\n", p2DeckSize);
+		}
+		else if(roundResult == 2)
+		{
+			printf("Player 1 won that round.\n");
+
+			p2Deck = moveCardBack(p2Deck);
+			p2Deck = insertBackDeck(p2Deck, copyCard(p1Deck));
+			p1Deck = removeCard(p1Deck, 0);
+
+			p2DeckSize = deckSize(p2Deck);
+			p1DeckSize = deckSize(p1Deck);
+
+			printf("Player 1 has %d cards.\n", p1DeckSize);
+			printf("Player 2 has %d cards.\n", p2DeckSize);
+		}
+		else
+		{
+			int war = 1;
+			int warResult = 0;
+
+			printf("Ugh oh...We have a tie! W-A-R!\n");
+			printf("Player 1 pulled out %s.\n", p1Deck->->nextptr->nextptr->type);
+			printf("\tPlayer 2 pulled out %s.", p2Deck->->nextptr->nextptr->type);
+
+			while(war == 1)
+			{
+				warResult = cardCompare(p1Deck->nextptr->nextptr, p2Deck->nextptr->nextptr);
+
+
+				if(warResult == 1)
+				{
+					printf("Player 1 won that W-A-R!\n");
+
+					p1Deck = moveCardBack(p1Deck);
+					p1Deck = moveCardBack(p1Deck);
+
+					p1Deck = insertBackDeck(p1Deck, copyCard(p2Deck));
+					p2Deck = removeCard(p2Deck, 0);
+					p1Deck = insertBackDeck(p1Deck, copyCard(p2Deck));
+					p2Deck = removeCard(p2Deck, 0);
+
+					p1Deck = moveCardBack(p1Deck);
+					p1Deck = insertBackDeck(p1Deck, copyCard(p2Deck));
+					p2Deck = removeCard(p2Deck, 0);
+
+					war = 0;
+				}
+				else if(warResult == 2)
+				{
+					printf("Player 2 won that W-A-R!\n")
+					p2Deck = moveCardBack(p2Deck);
+					p2Deck = moveCardBack(p2Deck);
+
+					p2Deck = insertBackDeck(p2Deck, copyCard(p1Deck));
+					p1Deck = removeCard(p1Deck, 0);
+					p2Deck = insertBackDeck(p2Deck, copyCard(p1Deck));
+					p1Deck = removeCard(p1Deck, 0);
+
+					p2Deck = moveCardBack(p2Deck);
+					p2Deck = insertBackDeck(p2Deck, copyCard(p1Deck));
+					p1Deck = removeCard(p1Deck, 0);
+
+					war = 0;
+				}
+				else
+				{
+					war = 1;
+				}
+			}
+		}
+
+		if(p1DeckSize == 0)
+		{
+			return 1;
+		}
+		else if(p2DeckSize == 0)
+		{
+			return 2;
+		}
+	}
 
 	return result;
 }
@@ -205,17 +338,22 @@ int deckSize(card_t * head)
 {
 	card_t *temp = head;
 
-	int count;
+	int count = 1;
+
+	printf("yer\n");
+
+	if(empty(head))
+    {
+        return 0;
+    }
+
+    printf("bruhhhh\n");
 
 	while(temp->nextptr != NULL)
 	{
-		
 		temp = temp->nextptr;
 		count++;
 	}
-	printf("DECK SIZE = %d\n", count);
-
-	free(temp);
 
 	return count;
 }
@@ -249,13 +387,17 @@ card_t * removeCard(card_t * node, int spot)
 {
 	card_t *head = node;
 	card_t *temp = search(head, spot);
-	int counter = 0;
 
-	if(node == temp)
+	if(empty(node))
 	{
-		head = head->nextptr;
+       return NULL;
+   	}
+	else if(node == temp)
+	{
+		node = head->nextptr;
+		head = NULL;
 		free(temp);
-		return head;
+		return node;
 	}
 	else
 	{
@@ -263,36 +405,48 @@ card_t * removeCard(card_t * node, int spot)
 		node->nextptr = temp->nextptr;
 
 		free(temp);
-	}
 
-	return head;
+		return node;
+	}
 }
 
 card_t * insertBackDeck(card_t *head, card_t *node)
 {
 	card_t *temp = head;
 
+	if(empty(head))
+    {
+        head = node;
+        return head;
+    }
+
+    printf("testtttt\n");
+
 	while(temp->nextptr != NULL)
 	{
+		printf("testt\n");
 		temp = temp->nextptr;
 	}
 
-	node = temp->nextptr;
+	temp->nextptr = node;
 
 	return head;
 }
 
 int compareCard(card_t * cardp1, card_t * cardp2)
 {
-	int result = 0;
-	int rank1 = 0;
-	int rank2 = 0;
-
-	if(cardp1->rank)
-
-	if(cardp1->rank)
-
-	return result;
+	if(cardp1->rank > cardp2->rank)
+	{
+		return 1;
+	}
+	else if(cardp2->rank > cardp1->rank)
+	{
+		return 2;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 card_t * moveCardBack(card_t *head)
