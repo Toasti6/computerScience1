@@ -149,6 +149,8 @@ int playRound()
 			int war = 1;
 			int warResult = 0;
 
+			card_t *warDeck = (card_t*) malloc(fullDeckSize);
+
 			printf("Ugh oh...We have a tie! W-A-R!\n");
 			printf("Player 1 pulled out %s.\n", p1Deck->->nextptr->nextptr->type);
 			printf("\tPlayer 2 pulled out %s.", p2Deck->->nextptr->nextptr->type);
@@ -162,7 +164,7 @@ int playRound()
 				{
 					printf("Player 1 won that W-A-R!\n");
 
-					p1Deck = moveCardBack(p1Deck);
+/*					p1Deck = moveCardBack(p1Deck);
 					p1Deck = moveCardBack(p1Deck);
 
 					p1Deck = insertBackDeck(p1Deck, copyCard(p2Deck));
@@ -173,13 +175,15 @@ int playRound()
 					p1Deck = moveCardBack(p1Deck);
 					p1Deck = insertBackDeck(p1Deck, copyCard(p2Deck));
 					p2Deck = removeCard(p2Deck, 0);
+*/
+					warDeck = 
 
 					war = 0;
 				}
 				else if(warResult == 2)
 				{
 					printf("Player 2 won that W-A-R!\n")
-					p2Deck = moveCardBack(p2Deck);
+/*					p2Deck = moveCardBack(p2Deck);
 					p2Deck = moveCardBack(p2Deck);
 
 					p2Deck = insertBackDeck(p2Deck, copyCard(p1Deck));
@@ -190,7 +194,7 @@ int playRound()
 					p2Deck = moveCardBack(p2Deck);
 					p2Deck = insertBackDeck(p2Deck, copyCard(p1Deck));
 					p1Deck = removeCard(p1Deck, 0);
-
+*/
 					war = 0;
 				}
 				else
